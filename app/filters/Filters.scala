@@ -10,5 +10,5 @@ class Filters @Inject() (
                           log: LoggingFilter
                           ) extends HttpFilters {
 
-  val filters = Seq(log)
+  val filters = Seq(gzip, log)
 }
