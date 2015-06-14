@@ -6,12 +6,12 @@ import play.api.mvc._
 
 import scala.concurrent.Future
 
-class Greeter extends Controller with GreeterAc
+object Greeter extends Controller with Greeter
 
-trait GreeterAc  {
+trait Greeter  {
   this: Controller =>
 
-  Greeting.greetingJson
+  implicit val greetingJson = Json.writes[Greeting]
 
   def greeting = Action { implicit request =>
     val json = Json.toJson(Greeting(1, "Hello, World!"))
@@ -36,10 +36,5 @@ trait GreeterAc  {
   }
 
   case class Greeting(id: Int, content: String)
-
-  object Greeting {
-    implicit val greetingJson = Json.writes[Greeting]
-  }
-
 }
 

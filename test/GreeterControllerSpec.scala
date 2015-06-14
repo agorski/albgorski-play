@@ -1,4 +1,4 @@
-import controllers.GreeterAc
+import controllers.Greeter
 import org.scalatestplus.play._
 import play.api.mvc._
 import play.api.test.Helpers._
@@ -7,7 +7,7 @@ import play.api.test._
 class GreeterControllerSpec extends PlaySpec with Results {
 
   trait WithControllerAndRequest {
-    val testController = new Controller with GreeterAc
+    val testController = new Controller with Greeter
 
     def fakeRequest(method: String = "GET", route: String = "/") = FakeRequest(method, route)
       .withHeaders(
