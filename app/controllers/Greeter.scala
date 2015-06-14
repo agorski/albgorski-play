@@ -6,16 +6,20 @@ import play.api.mvc._
 
 import scala.concurrent.Future
 
-object Greeter extends Controller with Greeter
+class Greeter extends Controller with GreeterGc
 
-trait Greeter  {
+trait GreeterGc  {
   this: Controller =>
+  val AcceptsMyContentType = Accepting("application/vnd.albgorski+json")
 
   implicit val greetingJson = Json.writes[Greeting]
 
   def greeting = Action { implicit request =>
     val json = Json.toJson(Greeting(1, "Hello, World!"))
-    Ok(json)
+    // http 127.0.0.1:9000/greeting Accept:application/vnd.albgorski+json
+    render {
+      case AcceptsMyContentType() => Ok(json)
+    }
   }
 
   val futureGreeting: Future[Greeting] = scala.concurrent.Future {
