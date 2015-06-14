@@ -7,7 +7,7 @@ import play.api.mvc._
 import scala.concurrent.Future
 
 
-class Application extends Controller {
+class Greeter extends Controller {
   Greeting.greetingJson
 
   def greeting = Action { implicit request =>
