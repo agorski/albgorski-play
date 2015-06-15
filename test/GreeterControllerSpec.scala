@@ -17,12 +17,11 @@ class GreeterControllerSpec extends PlaySpec with Results {
   }
 
   "REST API" should {
-    "should respond on /greeter" in new WithControllerAndRequest {
+    "respond on /greeter" in new WithControllerAndRequest {
       val request = fakeRequest("GET", "/greeting")
       val apiResult = call(testController.greeting, request)
       status(apiResult) mustEqual OK
       val jsonResult = contentAsJson(apiResult)
-      println(jsonResult)
       (jsonResult \ "id").as[Int] mustBe 1
       (jsonResult \ "content").as[String] mustBe "Hello, World!"
     }
