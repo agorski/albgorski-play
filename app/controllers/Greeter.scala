@@ -1,18 +1,27 @@
 package controllers
 
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{Format, JsValue, Json}
 import play.api.mvc._
 
 import scala.concurrent.Future
 
 class Greeter extends Controller with GreeterGc
 
-trait GreeterGc  {
+trait GreeterGc {
   this: Controller =>
   val AcceptsMyContentType = Accepting("application/vnd.albgorski+json")
 
-  implicit val greetingJson = Json.writes[Greeting]
+  case class Greeting(id: Int, content: String)
+
+  object Greeting {
+    implicit val responseFormat:Format[Greeting] = Json.format[Greeting]
+  }
+
+  def greetingId(id: Int) = Action { implicit request =>
+    val json = Json.toJson(Greeting(id, "Hello, World!"))
+    Ok(json)
+  }
 
   def greeting = Action { implicit request =>
     val json = Json.toJson(Greeting(1, "Hello, World!"))
@@ -32,13 +41,5 @@ trait GreeterGc  {
       Ok(json)
     }
   }
-
-
-  def greetingId(id: Int) = Action { implicit request =>
-    val json = Json.toJson(Greeting(id, "Hello, World!"))
-    Ok(json)
-  }
-
-  case class Greeting(id: Int, content: String)
 }
 
